@@ -1,6 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QLineEdit, QLCDNumber
+from PyQt5.QtWidgets import QCheckBox
 
 
 class Example(QWidget):
@@ -9,77 +10,55 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(300, 300, 600, 200)
-        self.setWindowTitle('Мини-калькулятор')
+        self.setGeometry(300, 300, 300, 300)
+        self.setWindowTitle('Прятки для виджетов')
 
-        self.lbl1 = QLabel(self)
-        self.lbl1.setText('Первое число(целое):')
-        self.lbl1.move(0, 0)
+        self.box1 = QCheckBox(self)
+        self.box1.move(50, 50)
+        self.box1.stateChanged.connect(self.box_pushed)
+        self.box1.setText('box1')
 
-        self.name_input1 = QLineEdit(self)
-        self.name_input1.move(0, 20)
+        self.box2 = QCheckBox(self)
+        self.box2.move(50, 100)
+        self.box2.stateChanged.connect(self.box_pushed)
+        self.box2.setText('box2')
 
-        self.name_input2 = QLineEdit(self)
-        self.name_input2.move(0, 180)
+        self.box3 = QCheckBox(self)
+        self.box3.move(50, 150)
+        self.box3.stateChanged.connect(self.box_pushed)
+        self.box3.setText('box3')
 
-        self.lbl2 = QLabel(self)
-        self.lbl2.setText('Второе число(целое):')
-        self.lbl2.move(0, 160)
+        self.box4 = QCheckBox(self)
+        self.box4.move(50, 200)
+        self.box4.stateChanged.connect(self.box_pushed)
+        self.box4.setText('box4')
 
-        self.btn = QPushButton(self)
-        self.btn.move(150, 80)
-        self.btn.resize(100, 40)
-        self.btn.setText('-->')
-        self.btn.clicked.connect(self.btn_pushed)
+        self.lbl1 = QLineEdit(self)
+        self.lbl1.move(100, 50)
+        self.lbl1.setText('Поле box1')
+        self.lbl1.setVisible(False)
 
-        self.lbl3 = QLabel(self)
-        self.lbl3.move(300, 0)
-        self.lbl3.setText('Сумма:')
+        self.lbl2 = QLineEdit(self)
+        self.lbl2.move(100, 100)
+        self.lbl2.setText('Поле box2')
+        self.lbl2.setVisible(False)
 
-        self.lbl4 = QLabel(self)
-        self.lbl4.move(300, 50)
-        self.lbl4.setText('Разность:')
+        self.lbl3 = QLineEdit(self)
+        self.lbl3.move(100, 150)
+        self.lbl3.setText('Поле box3')
+        self.lbl3.setVisible(False)
 
+        self.lbl4 = QLineEdit(self)
+        self.lbl4.move(100, 200)
+        self.lbl4.setText('Поле box4')
+        self.lbl4.setVisible(False)
 
-        self.lbl5 = QLabel(self)
-        self.lbl5.move(300, 100)
-        self.lbl5.setText('Произведение:')
-
-
-        self.lbl6 = QLabel(self)
-        self.lbl6.move(300, 150)
-        self.lbl6.setText('Частное:')
-
-        self.lcd1 = QLCDNumber(self)
-        self.lcd1.move(450, 0)
-        self.lcd1.resize(100, 40)
-
-        self.lcd2 = QLCDNumber(self)
-        self.lcd2.move(450, 50)
-        self.lcd2.resize(100, 40)
-
-
-        self.lcd3 = QLCDNumber(self)
-        self.lcd3.move(450, 100)
-        self.lcd3.resize(100, 40)
-
-        self.lcd4 = QLCDNumber(self)
-        self.lcd4.move(450, 150)
-        self.lcd4.resize(100, 40)
-
-    def btn_pushed(self):
-        first = int(self.name_input1.text())
-        second = int(self.name_input2.text())
-        print(first + second)
-        print(first - second)
-        print(first * second)
-        self.lcd1.display(first + second)
-        self.lcd2.display(first - second)
-        self.lcd3.display(first * second)
-        if second == 0:
-            self.lcd4.display('Error')
-        else:
-            self.lcd4.display(first // second)
+    def box_pushed(self):
+        name = self.sender().text()
+        if bool(eval(f'self.{name}.checkState()')):
+            eval(f'self.{"lbl" + name[-1]}.setVisible(True)')
+        elif not bool(eval(f'self.{name}.checkState()')):
+            eval(f'self.{"lbl" + name[-1]}.setVisible(False)')
 
 
 if __name__ == '__main__':
