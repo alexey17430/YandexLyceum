@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QLineEdit, QLCDNumber
 
 
 class Example(QWidget):
@@ -9,33 +9,77 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(300, 300, 400, 400)
-        self.setWindowTitle('Вычисление выражений')
-        self.btn = QPushButton('->', self)
-        self.btn.move(180, 180)
-        self.btn.resize(40, 40)
+        self.setGeometry(300, 300, 600, 200)
+        self.setWindowTitle('Мини-калькулятор')
+
+        self.lbl1 = QLabel(self)
+        self.lbl1.setText('Первое число(целое):')
+        self.lbl1.move(0, 0)
+
+        self.name_input1 = QLineEdit(self)
+        self.name_input1.move(0, 20)
+
+        self.name_input2 = QLineEdit(self)
+        self.name_input2.move(0, 180)
+
+        self.lbl2 = QLabel(self)
+        self.lbl2.setText('Второе число(целое):')
+        self.lbl2.move(0, 160)
+
+        self.btn = QPushButton(self)
+        self.btn.move(150, 80)
+        self.btn.resize(100, 40)
+        self.btn.setText('-->')
         self.btn.clicked.connect(self.btn_pushed)
 
-        self.name_input_first = QLineEdit(self)
-        self.name_input_first.move(40, 180)
-        self.name_input_first.resize(120, 40)
+        self.lbl3 = QLabel(self)
+        self.lbl3.move(300, 0)
+        self.lbl3.setText('Сумма:')
 
-        self.lbl_first = QLabel(self)
-        self.lbl_first.setText('Выражение:')
-        self.lbl_first.move(40, 160)
-        self.lbl_first.adjustSize()
+        self.lbl4 = QLabel(self)
+        self.lbl4.move(300, 50)
+        self.lbl4.setText('Разность:')
 
-        self.name_input_second = QLineEdit(self)
-        self.name_input_second.move(240, 180)
-        self.name_input_second.resize(120, 40)
 
-        self.lbl_second = QLabel(self)
-        self.lbl_second.setText('Результат:')
-        self.lbl_second.move(240, 160)
+        self.lbl5 = QLabel(self)
+        self.lbl5.move(300, 100)
+        self.lbl5.setText('Произведение:')
+
+
+        self.lbl6 = QLabel(self)
+        self.lbl6.move(300, 150)
+        self.lbl6.setText('Частное:')
+
+        self.lcd1 = QLCDNumber(self)
+        self.lcd1.move(450, 0)
+        self.lcd1.resize(100, 40)
+
+        self.lcd2 = QLCDNumber(self)
+        self.lcd2.move(450, 50)
+        self.lcd2.resize(100, 40)
+
+
+        self.lcd3 = QLCDNumber(self)
+        self.lcd3.move(450, 100)
+        self.lcd3.resize(100, 40)
+
+        self.lcd4 = QLCDNumber(self)
+        self.lcd4.move(450, 150)
+        self.lcd4.resize(100, 40)
 
     def btn_pushed(self):
-        if self.btn.text() == '->':
-            self.name_input_second.setText(str(eval(self.name_input_first.text())))
+        first = int(self.name_input1.text())
+        second = int(self.name_input2.text())
+        print(first + second)
+        print(first - second)
+        print(first * second)
+        self.lcd1.display(first + second)
+        self.lcd2.display(first - second)
+        self.lcd3.display(first * second)
+        if second == 0:
+            self.lcd4.display('Error')
+        else:
+            self.lcd4.display(first // second)
 
 
 if __name__ == '__main__':
