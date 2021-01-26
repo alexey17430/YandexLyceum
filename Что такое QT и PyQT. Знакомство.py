@@ -1,8 +1,7 @@
 import sys
-from random import randint
+
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QLineEdit, QLCDNumber
 from PyQt5.QtWidgets import QCheckBox, QPlainTextEdit
-from PyQt5 import QtGui
 
 
 class Example(QWidget):
@@ -11,99 +10,124 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(500, 300, 300, 300)
-        self.setWindowTitle('Ним наносит ответный удар')
-        self.font = QtGui.QFont()
-        self.font.setPointSize(20)
-        self.super_font = QtGui.QFont()
-        self.super_font.setPointSize(14)
-        screen_font = QtGui.QFont()
-        screen_font.setPointSize(10)
+        self.setGeometry(300, 300, 300, 400)
+        self.setWindowTitle('Заказ в Макдональдсе')
 
-        x = randint(1, 50)
-        y = randint(1, x)
-        while True:
-            z = randint(1, x)
-            if z != y != x:
-                break
+        self.box1 = QCheckBox(self)
+        self.box1.move(25, 25)
+        self.box1.setText('Чизбургер')
+        self.box1.clicked.connect(self.box_pushed)
+        self.box1.setAccessibleName('box1')
 
-        self.btn_plus = QPushButton(self)
-        self.btn_plus.move(25, 100)
-        self.btn_plus.resize(100, 40)
-        self.btn_plus.setText(f'+{y}')
-        self.btn_plus.setFont(self.font)
-        self.btn_plus.clicked.connect(self.btn_pushed)
+        self.box2 = QCheckBox(self)
+        self.box2.move(25, 50)
+        self.box2.setText('Гамбургер')
+        self.box2.clicked.connect(self.box_pushed)
+        self.box2.setAccessibleName('box2')
 
-        self.btn_minus = QPushButton(self)
-        self.btn_minus.move(175, 100)
-        self.btn_minus.resize(100, 40)
-        self.btn_minus.setText(f'-{z}')
-        self.btn_minus.setFont(self.font)
-        self.btn_minus.clicked.connect(self.btn_pushed)
+        self.box3 = QCheckBox(self)
+        self.box3.move(25, 75)
+        self.box3.setText('Кока-кола')
+        self.box3.clicked.connect(self.box_pushed)
+        self.box3.setAccessibleName('box3')
 
-        self.btn_new_game = QPushButton(self)
-        self.btn_new_game.move(75, 150)
-        self.btn_new_game.resize(150, 50)
-        self.btn_new_game.setText('Начать\nновую игру')
-        self.btn_new_game.setFont(self.super_font)
-        self.btn_new_game.clicked.connect(self.new_game_pushed)
+        self.box4 = QCheckBox(self)
+        self.box4.move(25, 100)
+        self.box4.setText('Фанта')
+        self.box4.clicked.connect(self.box_pushed)
+        self.box4.setAccessibleName('box4')
 
-        self.title_moves = QLabel(self)
-        self.title_moves.move(25, 200)
-        self.title_moves.setFont(screen_font)
-        self.title_moves.resize(100, 40)
-        self.title_moves.setText('Осталось ходов')
+        self.box5 = QCheckBox(self)
+        self.box5.move(25, 125)
+        self.box5.setText('Нагетсы')
+        self.box5.clicked.connect(self.box_pushed)
+        self.box5.setAccessibleName('box5')
 
-        self.number_now = QLabel(self)
-        self.number_now.move(25, 250)
-        self.number_now.setFont(screen_font)
-        self.number_now.resize(100, 40)
-        self.number_now.setText('Текущее число')
+        self.box6 = QCheckBox(self)
+        self.box6.move(25, 150)
+        self.box6.setText('Картошка фри')
+        self.box6.clicked.connect(self.box_pushed)
+        self.box6.setAccessibleName('box6')
 
-        self.lcd_moves = QLCDNumber(self)
-        self.lcd_moves.move(175, 200)
-        self.lcd_moves.resize(100, 40)
-        self.lcd_moves.display(10)
+        self.box7 = QCheckBox(self)
+        self.box7.move(25, 175)
+        self.box7.setText('Пирожок')
+        self.box7.clicked.connect(self.box_pushed)
+        self.box7.setAccessibleName('box7')
 
-        self.lcd_number = QLCDNumber(self)
-        self.lcd_number.move(175, 250)
-        self.lcd_number.resize(100, 40)
-        self.lcd_number.display(str(x))
+        self.btn = QPushButton(self)
+        self.btn.move(25, 200)
+        self.btn.resize(100, 40)
+        self.btn.setText('Заказать')
+        self.btn.clicked.connect(self.btn_pushed)
 
-        self.lbl = QLabel(self)
-        self.lbl.move(25, 25)
-        self.lbl.resize(300, 50)
-        self.lbl.setFont(self.super_font)
+        self.menu = QPlainTextEdit(self)
+        self.menu.move(25, 250)
+        self.menu.resize(225, 100)
+
+        self.line1 = QLineEdit(self)
+        self.line1.move(150, 25)
+        self.line1.resize(100, 20)
+        self.line1.setText('0')
+        self.line1.setDisabled(True)
+
+        self.line2 = QLineEdit(self)
+        self.line2.move(150, 50)
+        self.line2.resize(100, 20)
+        self.line2.setText('0')
+        self.line2.setDisabled(True)
+
+        self.line3 = QLineEdit(self)
+        self.line3.move(150, 75)
+        self.line3.resize(100, 20)
+        self.line3.setText('0')
+        self.line3.setDisabled(True)
+
+        self.line4 = QLineEdit(self)
+        self.line4.move(150, 100)
+        self.line4.resize(100, 20)
+        self.line4.setText('0')
+        self.line4.setDisabled(True)
+
+        self.line5 = QLineEdit(self)
+        self.line5.move(150, 125)
+        self.line5.resize(100, 20)
+        self.line5.setText('0')
+        self.line5.setDisabled(True)
+
+        self.line6 = QLineEdit(self)
+        self.line6.move(150, 150)
+        self.line6.resize(100, 20)
+        self.line6.setText('0')
+        self.line6.setDisabled(True)
+
+        self.line7 = QLineEdit(self)
+        self.line7.move(150, 175)
+        self.line7.resize(100, 20)
+        self.line7.setText('0')
+        self.line7.setDisabled(not bool(self.box7.checkState()))
 
     def btn_pushed(self):
-        number = int(self.sender().text())
-        anser = int(self.lcd_number.value())
-        self.lcd_moves.display(int(self.lcd_moves.value()) - 1)
-        anser += number
-        self.lcd_number.display(anser)
-        if int(self.lcd_number.value()) == 0:
-            self.lbl.setText('Победа, победа - время обеда')
-            self.btn_minus.setDisabled(True)
-            self.btn_plus.setDisabled(True)
-        elif int(self.lcd_moves.value()) == 0:
-            self.lbl.setText('Увы и ах, вы проиграли')
-            self.btn_minus.setDisabled(True)
-            self.btn_plus.setDisabled(True)
+        sp_menu = ['Ваш заказ:']  # все товары по 50 рублей
+        itogo = 0
+        for i in range(1, 8):
+            if eval(f'bool(self.box{i}.checkState())'):
+                tovar = eval(f"self.box{i}.text()")
+                colvo = eval(f"self.line{i}.text()")
+                sp_menu.append(f'Товар: {tovar}, количество: {int(colvo)},'
+                               f' сумма: {int(colvo) * 50}')
+                itogo += int(colvo) * 50
+        sp_menu.append(f'\nИтого: {itogo}')
+        for i in range(len(sp_menu)):
+            if i != 0 and i + 1 != len(sp_menu):
+                sp_menu[i] = f'{i}) ' + sp_menu[i]
+        self.menu.setPlainText('\n'.join(sp_menu))
 
-    def new_game_pushed(self):
-        x = randint(1, 50)
-        y = randint(1, x)
-        while True:
-            z = randint(1, x)
-            if z != y != x:
-                break
-
-        self.btn_plus.setText(f'+{y}')
-        self.btn_minus.setText(f'-{z}')
-        self.lcd_moves.display(10)
-        self.lcd_number.display(str(x))
-        self.btn_minus.setDisabled(False)
-        self.btn_plus.setDisabled(False)
+    def box_pushed(self):
+        box_name = self.sender().accessibleName()
+        if eval(f'self.{box_name}.checkState()'):
+            eval(f'self.line{box_name[-1]}.setText("1")')
+        eval(f'self.line{box_name[-1]}.setDisabled(not self.{box_name}.checkState())')
 
 
 if __name__ == '__main__':
