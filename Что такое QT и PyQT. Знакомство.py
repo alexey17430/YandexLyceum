@@ -10,55 +10,59 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(300, 300, 300, 300)
-        self.setWindowTitle('Прятки для виджетов')
+        self.setGeometry(300, 300, 500, 100)
+        self.setWindowTitle('Арифмометр')
 
-        self.box1 = QCheckBox(self)
-        self.box1.move(50, 50)
-        self.box1.stateChanged.connect(self.box_pushed)
-        self.box1.setText('box1')
+        self.name_input1 = QLineEdit(self)
+        self.name_input1.move(35 + 0, 35)
+        self.name_input1.resize(100, 30)
+        self.name_input1.setText('0')
 
-        self.box2 = QCheckBox(self)
-        self.box2.move(50, 100)
-        self.box2.stateChanged.connect(self.box_pushed)
-        self.box2.setText('box2')
+        self.name_input2 = QLineEdit(self)
+        self.name_input2.move(35 + 220, 35)
+        self.name_input2.resize(100, 30)
+        self.name_input2.setText('0')
 
-        self.box3 = QCheckBox(self)
-        self.box3.move(50, 150)
-        self.box3.stateChanged.connect(self.box_pushed)
-        self.box3.setText('box3')
 
-        self.box4 = QCheckBox(self)
-        self.box4.move(50, 200)
-        self.box4.stateChanged.connect(self.box_pushed)
-        self.box4.setText('box4')
+        self.btn1 = QPushButton(self)
+        self.btn1.setText('+')
+        self.btn1.move(35 + 100, 35)
+        self.btn1.resize(40, 30)
+        self.btn1.clicked.connect(self.button_pushed)
 
-        self.lbl1 = QLineEdit(self)
-        self.lbl1.move(100, 50)
-        self.lbl1.setText('Поле box1')
-        self.lbl1.setVisible(False)
+        self.btn2 = QPushButton(self)
+        self.btn2.setText('-')
+        self.btn2.move(35 + 140, 35)
+        self.btn2.resize(40, 30)
+        self.btn2.clicked.connect(self.button_pushed)
 
-        self.lbl2 = QLineEdit(self)
-        self.lbl2.move(100, 100)
-        self.lbl2.setText('Поле box2')
-        self.lbl2.setVisible(False)
+        self.btn3 = QPushButton(self)
+        self.btn3.setText('*')
+        self.btn3.move(35 + 180, 35)
+        self.btn3.resize(40, 30)
+        self.btn3.clicked.connect(self.button_pushed)
 
-        self.lbl3 = QLineEdit(self)
-        self.lbl3.move(100, 150)
-        self.lbl3.setText('Поле box3')
-        self.lbl3.setVisible(False)
+        self.lbl = QLabel(self)
+        self.lbl.setText('=')
+        self.lbl.move(35 + 321, 42)
 
-        self.lbl4 = QLineEdit(self)
-        self.lbl4.move(100, 200)
-        self.lbl4.setText('Поле box4')
-        self.lbl4.setVisible(False)
+        self.name_input3 = QLineEdit(self)
+        self.name_input3.move(35 + 330, 35)
+        self.name_input3.resize(100, 30)
+        self.name_input3.setDisabled(True)
 
-    def box_pushed(self):
-        name = self.sender().text()
-        if bool(eval(f'self.{name}.checkState()')):
-            eval(f'self.{"lbl" + name[-1]}.setVisible(True)')
-        elif not bool(eval(f'self.{name}.checkState()')):
-            eval(f'self.{"lbl" + name[-1]}.setVisible(False)')
+    def button_pushed(self):
+        first = str(self.name_input1.text())
+        if len(first) == 0:
+            first = 0
+        else:
+            first = int(first)
+        second = str(self.name_input2.text())
+        if len(second) == 0:
+            second = 0
+        else:
+            second = int(second)
+        self.name_input3.setText(str(eval(f'{first} {self.sender().text()} {second}')))
 
 
 if __name__ == '__main__':
