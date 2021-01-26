@@ -10,7 +10,7 @@ class Example(QWidget):
 
     def initUI(self):
         self.setGeometry(300, 300, 400, 400)
-        self.setWindowTitle('Фокус со словами')
+        self.setWindowTitle('Вычисление выражений')
         self.btn = QPushButton('->', self)
         self.btn.move(180, 180)
         self.btn.resize(40, 40)
@@ -20,21 +20,22 @@ class Example(QWidget):
         self.name_input_first.move(40, 180)
         self.name_input_first.resize(120, 40)
 
+        self.lbl_first = QLabel(self)
+        self.lbl_first.setText('Выражение:')
+        self.lbl_first.move(40, 160)
+        self.lbl_first.adjustSize()
+
         self.name_input_second = QLineEdit(self)
         self.name_input_second.move(240, 180)
         self.name_input_second.resize(120, 40)
 
+        self.lbl_second = QLabel(self)
+        self.lbl_second.setText('Результат:')
+        self.lbl_second.move(240, 160)
+
     def btn_pushed(self):
         if self.btn.text() == '->':
-            line_edit_name = self.name_input_first.text()
-            self.name_input_second.setText(line_edit_name)
-            self.name_input_first.setText('')
-            self.btn.setText('<-')
-        else:
-            line_edit_name = self.name_input_second.text()
-            self.name_input_first.setText(line_edit_name)
-            self.name_input_second.setText('')
-            self.btn.setText('->')
+            self.name_input_second.setText(str(eval(self.name_input_first.text())))
 
 
 if __name__ == '__main__':
