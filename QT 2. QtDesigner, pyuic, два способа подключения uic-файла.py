@@ -1,39 +1,45 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QRadioButton, QLabel, QPlainTextEdit
-from PyQt5.QtWidgets import QMainWindow, QButtonGroup
+from PyQt5.QtWidgets import QApplication, QRadioButton, QLabel, QPlainTextEdit, QListWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QButtonGroup, QPushButton
 from PyQt5 import QtGui, uic
+
+# константа с матрицей
+MATRICA = [[1, 0, 0, 1, 1, 1, 0, 1],
+           [1, 0, 0, 1, 1, 0, 0, 1],
+           [1, 0, 0, 1, 1, 1, 0, 1],
+           [1, 1, 0, 1, 1, 1, 0, 1],
+           [1, 0, 0, 1, 1, 1, 0, 1],
+           [1, 0, 0, 0, 1, 1, 1, 1],
+           [1, 0, 1, 1, 0, 1, 0, 1],
+           [1, 0, 1, 1, 0, 1, 0, 1]]
 
 
 class Example(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('записная книжка.ui', self)
-        self.setWindowTitle('Записная книжка')
+        self.setWindowTitle('Widget Art')
+        self.setGeometry(500, 300, 500, 500)
         self.font1 = QtGui.QFont()
         self.font1.setPointSize(18)
         self.font2 = QtGui.QFont()
         self.font2.setPointSize(12)
         self.font3 = QtGui.QFont()
         self.font3.setPointSize(10)
-
-        self.edit = QPlainTextEdit(self)
-        self.edit.move(40, 150)
-        self.edit.resize(400, 230)
-        self.edit.setFont(self.font1)
-
-        self.label_1.setFont(self.font2)
-        self.label_2.setFont(self.font2)
-        self.pushButton.setFont(self.font2)
-        self.pushButton.clicked.connect(self.btn_pushed)
-        self.lineEdit_1.setFont(self.font2)
-        self.lineEdit_2.setFont(self.font2)
-
-    def btn_pushed(self):
-        name = self.lineEdit_1.text()
-        number = self.lineEdit_2.text()
-        self.edit.setPlainText(self.edit.toPlainText() + name + ' ' + number + '\n')
-        self.lineEdit_1.setText('')
-        self.lineEdit_2.setText('')
+        btn_size = 500 / len(MATRICA)
+        x, y = 0, 0
+        for line in MATRICA:
+            for elem in line:
+                btn = QPushButton(self)
+                btn.resize(btn_size, btn_size)
+                btn.move(x, y)
+                x += btn_size
+                print(x)
+                if int(elem) == 1:
+                    btn.setStyleSheet('QPushButton {background-color: red; color: red;}')
+                else:
+                    btn.setStyleSheet('QPushButton {background-color: green; color: green;}')
+            x = 0
+            y += btn_size
 
 
 if __name__ == '__main__':
