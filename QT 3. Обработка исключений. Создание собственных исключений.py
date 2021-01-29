@@ -3,7 +3,7 @@ stroka = input().replace(' ', '')
 
 def main(st):
     try:
-        if st[0] != '8' and st[:2] != '+7':
+        if st[0] != '8' and st[0] != '+':
             raise ValueError
         new_st = ''
         otk = 0
@@ -28,20 +28,23 @@ def main(st):
             pass
         else:
             raise ValueError
-        if new_st.startswith('8'):
+        if new_st[0] == '8':
             new_st = '+7' + new_st[1:]
         elem = new_st[2:4]
-        flagok = False
+        flagok = True
         for i in ['902', '903', '904', '905', '906']:
             if new_st[2:5] == i:
-                flagok = True
+                flagok = False
                 break
         if len(new_st) != 12:
             raise IndexError
-        if elem == '91' or elem == '92' or elem == '93' or elem == '98' or elem == '96' or flagok:
-            pass
-        else:
-            return 'не определяется оператор сотовой связи'
+        if elem != '91' and elem != '92' and elem != '93' and \
+                elem != '98' and elem != '96' and flagok:
+            if new_st[0:2] == '+7':
+                return 'не определяется оператор сотовой связи'
+        if not new_st.startswith('+359') and not new_st.startswith('+7') and \
+                not new_st.startswith('+55') and not new_st.startswith('+1'):
+            return 'не определяется код страны'
         return new_st
     except ValueError:
         return 'неверный формат'
