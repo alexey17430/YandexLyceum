@@ -1,19 +1,35 @@
-# LBYL
-password = input().strip()
+class PasswordError(Exception):
+    pass
 
 
-def main(st):
+class LengthError(PasswordError):
+    pass
+
+
+class LetterError(PasswordError):
+    pass
+
+
+class DigitError(PasswordError):
+    pass
+
+
+class SequenceError(PasswordError):
+    pass
+
+
+def check_password(st):
     if len(st) <= 8:
-        return False
-    if st == st.lower():
-        return False
+        raise LengthError
+    if st == st.lower() or st == st.upper():
+        raise LetterError
     flag = False
     for i in st:
         if i in '1234567890':
             flag = True
             break
     if not flag:
-        return False
+        raise DigitError
     # english PC
     line1 = 'qwertyuiop'
     line2 = 'asdfghjkl'
@@ -21,11 +37,11 @@ def main(st):
     for i in range(len(st) - 2):
         elem = st[i: i + 3].lower()
         if elem in line1:
-            return False
+            raise SequenceError
         elif elem in line2:
-            return False
+            raise SequenceError
         elif elem in line3:
-            return False
+            raise SequenceError
 
     # english mac
     line1 = 'qwertzuiop'
@@ -34,11 +50,11 @@ def main(st):
     for i in range(len(st) - 2):
         elem = st[i: i + 3].lower()
         if elem in line1:
-            return False
+            raise SequenceError
         elif elem in line2:
-            return False
+            raise SequenceError
         elif elem in line3:
-            return False
+            raise SequenceError
     # russian
     line1 = 'йцукенгшщзхъ'
     line2 = 'фывапролджэё'
@@ -46,15 +62,9 @@ def main(st):
     for i in range(len(st) - 2):
         elem = st[i: i + 3].lower()
         if elem in line1:
-            return False
+            raise SequenceError
         elif elem in line2:
-            return False
+            raise SequenceError
         elif elem in line3:
-            return False
-    return True
-
-
-if main(password):
-    print('ok')
-else:
-    print('error')
+            raise SequenceError
+    return 'ok'
