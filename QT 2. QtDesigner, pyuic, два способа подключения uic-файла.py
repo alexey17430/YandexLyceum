@@ -1,71 +1,63 @@
 import sys
-from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLCDNumber
-from math import factorial
+from PyQt5.QtWidgets import QApplication, QRadioButton, QLabel
+from PyQt5.QtWidgets import QMainWindow, QButtonGroup
+from PyQt5 import QtGui, uic
 
 
-class MyWidget(QMainWindow):
+class Example(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('calc.ui', self)
-        for i in range(10):
-            eval(f'self.btn{i}.clicked.connect(self.num_pushed)')
-        self.btn_clear.clicked.connect(self.btn_clear_clicked)
-        self.btn_eq.clicked.connect(self.btn_equal)
-        self.btn_plus.clicked.connect(self.btn_operation)
-        self.btn_minus.clicked.connect(self.btn_operation)
-        self.btn_mult.clicked.connect(self.btn_operation)
-        self.btn_div.clicked.connect(self.btn_operation)
-        self.btn_sqrt.clicked.connect(self.btn_operation)
-        self.btn_pow.clicked.connect(self.btn_operation)
-        self.btn_fact.clicked.connect(self.btn_operation)
-        self.btn_dot.clicked.connect(self.dot_pushed)
-        self.dot_used = False
+        uic.loadUi('флаги.ui', self)
+        self.setWindowTitle('Текстовые флаги')
+        self.font1 = QtGui.QFont()
+        self.font1.setPointSize(18)
+        self.font2 = QtGui.QFont()
+        self.font2.setPointSize(12)
+        self.font3 = QtGui.QFont()
+        self.font3.setPointSize(10)
 
-    def btn_clear_clicked(self):
-        self.table.display(0)
-        self.dot_used = False
+        self.lbl = QLabel(self)
+        self.lbl.move(50, 250)
+        self.lbl.resize(275, 50)
+        self.lbl.setFont(self.font3)
 
-    def num_pushed(self):
-        number = str(self.sender().text())
-        screen_now = str(int(self.table.value()))
-        if self.dot_used:
-            self.desetich.append(number)
-            screen_now += '.'
-            for elem in self.desetich:
-                screen_now += elem
-            self.table.display(screen_now)
-            print(self.desetich)
-        else:
-            self.table.display(int(screen_now + number))
+        self.label.setFont(self.font1)
+        self.label_2.setFont(self.font1)
+        self.label_3.setFont(self.font1)
+        self.pushButton.setFont(self.font2)
+        self.pushButton.clicked.connect(self.btn_pushed)
 
-    def dot_pushed(self):
-        self.dot_used = True
-        self.desetich = list()
+        first_layout = QButtonGroup(self)
+        second_layout = QButtonGroup(self)
+        third_layout = QButtonGroup(self)
 
-    def btn_operation(self):
-        self.first_number = self.table.value()
-        self.operation = self.sender().text()
-        if self.operation == '!':
-            self.table.display(factorial(self.first_number))
-        elif self.operation == '√':
-            self.table.display(self.first_number ** 0.5)
-        else:
-            self.table.display(0)
-        self.dot_used = False
+        for i in range(1, 10):
+            eval(f'self.radioButton_{i}.setFont(self.font2)')
+            if str(i) in '123':
+                eval(f'first_layout.addButton(self.radioButton_{i})')
+            elif str(i) in '456':
+                eval(f'second_layout.addButton(self.radioButton_{i})')
+            elif str(i) in '789':
+                eval(f'third_layout.addButton(self.radioButton_{i})')
+            if i == 1 or i == 4 or i == 7:
+                eval(f'self.radioButton_{i}.setChecked(True)')
 
-    def btn_equal(self):
-        n = self.table.value()
-        if self.operation == '^':
-            self.table.display(self.first_number ** n)
-        else:
-            result = eval(str(self.first_number) + self.operation + str(n))
-            self.table.display(result)
-        self.dot_used = False
+    def btn_pushed(self):
+        flag_colors = list()
+        for i in range(1, 4):
+            if eval(f'self.radioButton_{i}.isChecked()'):
+                eval(f'flag_colors.append(self.radioButton_{i}.text())')
+        for i in range(4, 7):
+            if eval(f'self.radioButton_{i}.isChecked()'):
+                eval(f'flag_colors.append(self.radioButton_{i}.text())')
+        for i in range(7, 10):
+            if eval(f'self.radioButton_{i}.isChecked()'):
+                eval(f'flag_colors.append(self.radioButton_{i}.text())')
+        self.lbl.setText(f'Цвета флага: {", ".join(flag_colors)}')
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = MyWidget()
+    ex = Example()
     ex.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
