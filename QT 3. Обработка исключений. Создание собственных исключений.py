@@ -32,9 +32,11 @@ def main(st):
             new_st = '+7' + new_st[1:]
         if len(new_st) == 12:
             return new_st
-        raise ValueError
+        raise IndexError
     except ValueError:
-        return 'error'
+        return 'неверный формат'
+    except IndexError:
+        return 'неверное количество цифр'
 
 
 print(main(stroka))
