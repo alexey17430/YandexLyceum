@@ -1,42 +1,60 @@
-stroka = input().replace(' ', '')
+# LBYL
+password = input().strip()
 
 
 def main(st):
-    try:
-        if st[0] != '8' and st[:2] != '+7':
-            raise ValueError
-        new_st = ''
-        otk = 0
-        clo = 0
-        if st.startswith('-') or st.endswith('-') or \
-                ('(' in st and ')' in st and st.index(')') < st.index('(')):
-            raise ValueError
+    if len(st) <= 8:
+        return False
+    if st == st.lower():
+        return False
+    flag = False
+    for i in st:
+        if i in '1234567890':
+            flag = True
+            break
+    if not flag:
+        return False
+    # english PC
+    line1 = 'qwertyuiop'
+    line2 = 'asdfghjkl'
+    line3 = 'zxcvbnm'
+    for i in range(len(st) - 2):
+        elem = st[i: i + 3].lower()
+        if elem in line1:
+            return False
+        elif elem in line2:
+            return False
+        elif elem in line3:
+            return False
 
-        for j in range(len(st)):
-            i = st[j]
-            if j + 1 != len(st) and st[j] + st[j + 1] == '--':
-                raise ValueError
-            if i == '(':
-                otk += 1
-            elif i == ')':
-                clo += 1
-            elif i != ' ' and i != '-' and i != '(' and i != ')' and i in '+1234567890':
-                new_st += i
-            elif i not in '+1234567890() -\t':
-                raise ValueError
-        if otk == clo == 1 or otk == clo == 0:
-            pass
-        else:
-            raise ValueError
-        if new_st.startswith('8'):
-            new_st = '+7' + new_st[1:]
-        if len(new_st) == 12:
-            return new_st
-        raise IndexError
-    except ValueError:
-        return 'неверный формат'
-    except IndexError:
-        return 'неверное количество цифр'
+    # english mac
+    line1 = 'qwertzuiop'
+    line2 = 'asdfghjkl'
+    line3 = 'yxcvbnm'
+    for i in range(len(st) - 2):
+        elem = st[i: i + 3].lower()
+        if elem in line1:
+            return False
+        elif elem in line2:
+            return False
+        elif elem in line3:
+            return False
+    # russian
+    line1 = 'йцукенгшщзхъ'
+    line2 = 'фывапролджэё'
+    line3 = 'ячсмитьбю'
+    for i in range(len(st) - 2):
+        elem = st[i: i + 3].lower()
+        if elem in line1:
+            return False
+        elif elem in line2:
+            return False
+        elif elem in line3:
+            return False
+    return True
 
 
-print(main(stroka))
+if main(password):
+    print('ok')
+else:
+    print('error')
