@@ -1,45 +1,67 @@
-import random
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QLineEdit, QLCDNumber
-from PyQt5.QtWidgets import QCheckBox, QPlainTextEdit
-from PyQt5 import QtGui
+from PyQt5.QtWidgets import QApplication, QRadioButton, QLabel
+from PyQt5.QtWidgets import QMainWindow, QButtonGroup, QLineEdit
+from PyQt5 import QtGui, uic
 
 
-def random_line():
-    file = open('lines.txt')
-    sp = list(map(lambda st: st.strip(), file.readlines()))
-    if len(sp) > 0:
-        return random.choice(sp)
-    file.close()
-
-
-class Example(QWidget):
+class Example(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI()
+        uic.loadUi('файловая статистика.ui', self)
+        self.setWindowTitle('файловая статистика')
+        self.font1 = QtGui.QFont()
+        self.font1.setPointSize(18)
+        self.font2 = QtGui.QFont()
+        self.font2.setPointSize(12)
+        self.font3 = QtGui.QFont()
+        self.font3.setPointSize(10)
+        self.lineEdit_1.setFont(self.font2)
+        self.lineEdit_2.setFont(self.font2)
+        self.lineEdit_3.setFont(self.font2)
+        self.lineEdit_4.setFont(self.font2)
 
-    def initUI(self):
-        self.setGeometry(400, 300, 400, 100)
-        self.setWindowTitle('Cлучайная строка из файла - 2')
-        self.btn_font = QtGui.QFont()
-        self.btn_font.setPointSize(16)
-        self.line_font = QtGui.QFont()
-        self.line_font.setPointSize(12)
-
-        self.btn = QPushButton(self)
-        self.btn.move(20, 20)
-        self.btn.resize(100, 60)
-        self.btn.setText('Получить')
-        self.btn.setFont(self.btn_font)
-        self.btn.clicked.connect(self.btn_pushed)
-
-        self.line = QPlainTextEdit(self)
-        self.line.resize(240, 60)
-        self.line.move(140, 20)
-        self.line.setFont(self.line_font)
+        for i in range(1, 5):
+            eval(f'self.label_{i}.setFont(self.font2)')
+        self.pushButton.clicked.connect(self.btn_pushed)
 
     def btn_pushed(self):
-        self.line.setPlainText(random_line())
+        self.lineEdit_2.setText('')
+        self.lineEdit_3.setText('')
+        self.lineEdit_4.setText('')
+        file_name = self.lineEdit_1.text()
+        try:
+            if '.txt' not in file_name:
+                raise IndexError
+            file = open(file_name.strip())
+            all_lines = list(map(lambda x: (x.strip()), file.readlines()))
+            numbers = list()
+            for line in all_lines:
+                flag = True
+                for i in line:
+                    if i not in '1234567890':
+                        flag = False
+                if flag:
+                    numbers.append(float(line))
+            ma = max(numbers)
+            mi = min(numbers)
+            sr = round(sum(numbers) / len(numbers), 2)
+            file.close()
+            ans_file = open('output.txt', 'w')
+            ans_file.write(f'{ma}\n{mi}\n{sr}\n\n')
+            self.lineEdit_2.setText(str(ma))
+            self.lineEdit_3.setText(str(mi))
+            self.lineEdit_4.setText(str(sr))
+            self.label.setFont(self.font2)
+            self.label.setText('Все преобразования выполнены успешно')
+        except IndexError:
+            self.label.setFont(self.font2)
+            self.label.setText('Файл содержит некоректное расширение')
+        except TypeError:
+            self.label.setFont(self.font2)
+            self.label.setText('В файле содержатся некоректные данные')
+        except FileNotFoundError:
+            self.label.setFont(self.font2)
+            self.label.setText('Необходимый файл не найден')
 
 
 if __name__ == '__main__':
