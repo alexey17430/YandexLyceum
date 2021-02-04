@@ -1,46 +1,46 @@
 import sys
-
-from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QPushButton, QLabel
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtGui import QPixmap
-from PIL import Image
+from PIL import Image, ImageDraw
+from PyQt5.QtGui import QPixmap, QFont, QPainter, QColor
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QPushButton, QFileDialog, QInputDialog
+from random import randint
 
 
-class Example(QWidget):
+class Window(QWidget):
     def __init__(self):
         super().__init__()
-        self.initUI()
+        self.font = QFont()
+        self.font.setPointSize(14)
+        self.setGeometry(500, 200, 300, 300)
+        self.setWindowTitle('Генерация флага')
 
-    def initUI(self):
-        self.setGeometry(500, 200, 500, 500)
-        self.setWindowTitle('Управление прозрачностью')
-        self.fname = QFileDialog.getOpenFileName(self, 'Выбрать картинку', '')[0]
+        self.btn = QPushButton(self)
+        self.btn.setText('Ввести количество\nцветов флага')
+        self.btn.resize(200, 50)
+        self.btn.move(50, 25)
+        self.btn.setFont(self.font)
+        self.btn.clicked.connect(self.button_pushed)
 
-        self.sld = QSlider(self)
-        self.sld.move(25, 100)
-        self.sld.resize(25, 300)
-        self.sld.setMaximum(250)
-        self.sld.setMinimum(0)
-        self.sld.setValue(250)
-        self.sld.valueChanged.connect(self.change_slider)
-
-        self.pixmap = QPixmap(self.fname)
         self.image = QLabel(self)
-        self.image.move(75, 25)
-        self.image.resize(400, 450)
-        self.image.setPixmap(self.pixmap)
+        self.image.move(50, 100)
+        self.image.resize(200, 120)
 
-    def change_slider(self):
-        im = Image.open(self.fname)
-        v = self.sld.value()
-        im.putalpha(v)
-        im.save('temp.png')
-        self.image.setPixmap(QPixmap('temp.png'))
+    def button_pushed(self):
+        colvo, ok_pressed = QInputDialog.getInt(self, "Введите количество цветов",
+                                                "Сколько цветов?",
+                                                3, 1, 5, 1)
+        im = Image.new('RGB', (200, 120), (255, 255, 255))
+        draw = ImageDraw.Draw(im)
+        if ok_pressed:
+            for i in range(int(colvo)):
+                draw.rectangle((0, 120 // colvo * i, 200, 120 // colvo * (i + 1)),
+                               fill=(randint(1, 255), randint(1, 255), randint(1, 255)), width=5)
+        im.save('picture.png')
+        self.pixmap = QPixmap('picture.png')
+        self.image.setPixmap(self.pixmap)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Example()
-    ex.show()
+    window = Window()
+    window.show()
     sys.exit(app.exec())
