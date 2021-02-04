@@ -1,49 +1,46 @@
 import sys
-from PyQt5 import uic
-from PyQt5.QtGui import QPainter, QColor, QFont
-from PyQt5.QtWidgets import QWidget, QApplication
+
+from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QPushButton, QLabel
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtGui import QPixmap
+from PIL import Image
 
 
-class Window(QWidget):
+class Example(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi('square.ui', self)
-        self.pushButton.clicked.connect(self.paint)
-        self.do_paint = False
-        self.font = QFont()
-        self.font.setPointSize(14)
+        self.initUI()
 
-        self.pushButton.setFont(self.font)
-        self.label.setFont(self.font)
-        self.label_2.setFont(self.font)
-        self.label_3.setFont(self.font)
-        self.spinBox.setFont(self.font)
-        self.doubleSpinBox.setFont(self.font)
-        self.spinBox_2.setFont(self.font)
+    def initUI(self):
+        self.setGeometry(500, 200, 500, 500)
+        self.setWindowTitle('Управление прозрачностью')
+        self.fname = QFileDialog.getOpenFileName(self, 'Выбрать картинку', '')[0]
 
-    def paintEvent(self, event):
-        if self.do_paint:
-            qp = QPainter()
-            qp.begin(self)
-            qp.setPen(QColor('red'))
-            delta = 0
-            start = self.side
-            for i in range(self.n):
-                qp.drawRect(50 + delta, 125 + delta, self.side, self.side)
-                delta = (start - round(self.k * self.side)) // 2
-                self.side = round(self.k * self.side)
-            qp.end()
+        self.sld = QSlider(self)
+        self.sld.move(25, 100)
+        self.sld.resize(25, 300)
+        self.sld.setMaximum(250)
+        self.sld.setMinimum(0)
+        self.sld.setValue(250)
+        self.sld.valueChanged.connect(self.change_slider)
 
-    def paint(self):
-        self.side = self.spinBox.value()
-        self.k = self.doubleSpinBox.value()
-        self.n = self.spinBox_2.value()
-        self.do_paint = True
-        self.repaint()
+        self.pixmap = QPixmap(self.fname)
+        self.image = QLabel(self)
+        self.image.move(75, 25)
+        self.image.resize(400, 450)
+        self.image.setPixmap(self.pixmap)
+
+    def change_slider(self):
+        im = Image.open(self.fname)
+        v = self.sld.value()
+        im.putalpha(v)
+        im.save('temp.png')
+        self.image.setPixmap(QPixmap('temp.png'))
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Window()
-    window.show()
+    ex = Example()
+    ex.show()
     sys.exit(app.exec())
