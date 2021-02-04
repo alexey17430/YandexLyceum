@@ -1,46 +1,54 @@
 import sys
-from PIL import Image, ImageDraw
-from PyQt5.QtGui import QPixmap, QFont, QPainter, QColor
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QPushButton, QFileDialog, QInputDialog
-from random import randint
+
+from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QPushButton, QLabel
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtGui import QPixmap, QColor, QPainter
+from PIL import Image
 
 
-class Window(QWidget):
+class Example(QWidget):
     def __init__(self):
         super().__init__()
-        self.font = QFont()
-        self.font.setPointSize(14)
-        self.setGeometry(500, 200, 300, 300)
-        self.setWindowTitle('Генерация флага')
+        self.initUI()
 
-        self.btn = QPushButton(self)
-        self.btn.setText('Ввести количество\nцветов флага')
-        self.btn.resize(200, 50)
-        self.btn.move(50, 25)
-        self.btn.setFont(self.font)
-        self.btn.clicked.connect(self.button_pushed)
+    def initUI(self):
+        self.setGeometry(500, 200, 500, 500)
+        self.setWindowTitle('Рост хорошего настроения')
+        self.do_paint = False
+        self.sld = QSlider(self)
+        self.sld.move(25, 50)
+        self.sld.resize(25, 400)
+        self.sld.setMaximum(100)
+        self.sld.setMinimum(0)
+        self.sld.setValue(0)
+        self.sld.valueChanged.connect(self.paint)
 
-        self.image = QLabel(self)
-        self.image.move(50, 100)
-        self.image.resize(200, 120)
+    def paint(self):
+        self.do_paint = True
+        self.repaint()
 
-    def button_pushed(self):
-        colvo, ok_pressed = QInputDialog.getInt(self, "Введите количество цветов",
-                                                "Сколько цветов?",
-                                                3, 1, 5, 1)
-        im = Image.new('RGB', (200, 120), (255, 255, 255))
-        draw = ImageDraw.Draw(im)
-        if ok_pressed:
-            for i in range(int(colvo)):
-                draw.rectangle((0, 120 // colvo * i, 200, 120 // colvo * (i + 1)),
-                               fill=(randint(1, 255), randint(1, 255), randint(1, 255)), width=5)
-        im.save('picture.png')
-        self.pixmap = QPixmap('picture.png')
-        self.image.setPixmap(self.pixmap)
+    def paintEvent(self, event):
+        if self.do_paint:
+            v = self.sld.value()
+            qp = QPainter()
+            qp.begin(self)
+            qp.setPen(QColor(255, 0, 0))
+            qp.drawEllipse(100, 62, 3.75 * v, 3.75 * v)
+            qp.drawEllipse(100 + 3.75 // 3 * v, 62 + 3.75 // 2 * v, 0.5 * v, 0.5 * v)
+            qp.drawEllipse(100 + 3.75 // 3 * v + 1.25 * v, 62 + 3.75 // 2 * v, 0.5 * v, 0.5 * v)
+            if v < 25:
+                qp.drawArc(100 + 3.75 * v // 2 - v, 62 + 2.5 * v, 2 * v, v, 0, 3000)
+            elif 25 <= v <= 50:
+                qp.drawLine(100 + 0.75 * v, 62 + 2.82 * v, 100 + 3 * v, 62 + 2.82 * v)
+            elif 50 <= v <= 75:
+                qp.drawArc(100 + 3.75 * v // 2 - 0.5 * v, 62 + 2 * v, 2 * v, v, -1500, 2000)
+            else:
+                qp.drawArc(100 + 3.75 * v // 2 - v, 62 + 2 * v, 2 * v, v, -2900, 3000)
+            qp.end()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = Window()
-    window.show()
+    ex = Example()
+    ex.show()
     sys.exit(app.exec())
