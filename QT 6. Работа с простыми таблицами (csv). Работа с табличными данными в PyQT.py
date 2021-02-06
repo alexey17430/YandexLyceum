@@ -1,8 +1,7 @@
 import csv
 
-file = open('vps.csv', encoding='UTF-8')
-reader = (csv.DictReader(file, delimiter=';'))
-number = int(input())
+file = open('wares.csv', encoding='UTF-8')
+reader = csv.DictReader(file, delimiter=';')
 for elem in reader:
-    if not int(elem['соответствует в %']) < number:
-        print(elem['Специальность'])
+    if int(elem['Old price']) - int(elem['New price']) > 0:
+        print(elem['Name'])
