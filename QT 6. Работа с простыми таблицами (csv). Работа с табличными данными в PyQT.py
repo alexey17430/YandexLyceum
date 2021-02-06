@@ -1,17 +1,15 @@
-import csv
+from sys import stdin
 
-file = open('salary.csv', encoding='UTF-8')
-reader = list(csv.DictReader(file, delimiter=';'))
-name = input()
-year1, year2 = input().split()
-ans_file = open('out_file.csv', 'w', encoding='UTF-8')
+n, m = map(int, input().split())
+ans_file = open('exam.csv', 'w', encoding='utf-8')
 flag = True
-for elem in reader:
-    if elem['Федеральный округ'] != name:
-        continue
-    first, second = elem[year1], elem[year2]
-    if (int(second) - int(first)) / int(first) * 100 < 4:
+for elem in stdin:
+    elem = elem.strip()
+    elem = elem.split()
+    if int(elem[-1]) + int(elem[-2]) + int(elem[-3]) >= n and int(elem[-1]) >= m and \
+            int(elem[-2]) >= m and int(elem[-3]) >= m:
         if flag:
-            print(f'Субъект;{year1};{year2}', file=ans_file)
+            print('Фамилия;имя;результат 1;результат 2;результат 3;сумма', file=ans_file)
             flag = False
-        print(f'{elem["Субъект"]};{first};{second}', file=ans_file)
+        s = int(elem[-1]) + int(elem[-2]) + int(elem[-3])
+        print(f'{";".join(elem)};{s}', file=ans_file)
