@@ -3,10 +3,7 @@ import sqlite3
 file_name = input()
 con = sqlite3.connect(file_name)
 cur = con.cursor()
-result = cur.execute(f'''SELECT year FROM films WHERE title like "Х%"''').fetchall()
-ans = list()
+result = cur.execute(f'''SELECT title FROM films WHERE
+genre == (SELECT id from genres where title = 'комедия') and duration >= 60''').fetchall()
 for elem in result:
-    if elem[0] not in ans:
-        ans.append(elem[0])
-for elem in ans:
-    print(elem)
+    print(elem[0])
