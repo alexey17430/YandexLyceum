@@ -6,7 +6,7 @@ def get_result(name):
     cur = con.cursor()
     cur.execute('''
     UPDATE films
-    SET duration = 42
-    WHERE duration = ""
+    SET duration = duration * 2
+    WHERE genre = (select id from genres where title = 'фантастика')
     ''')
     con.commit()
