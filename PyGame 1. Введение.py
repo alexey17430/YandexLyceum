@@ -1,23 +1,38 @@
 import pygame
 
 
-def draw(w, h):
+def draw(width, colvo):
     screen.fill((0, 0, 0))
-    pygame.draw.rect(screen, pygame.Color(255, 0, 0), (2, 2, w - 3, h - 3), 0)
+    sqr_width = width / colvo
+    color_start = 'black'
+    for i in range(colvo):
+        color = color_start
+        for j in range(colvo):
+            if color == 'white':
+                pygame.draw.rect(screen, pygame.Color('white'), (
+                width - sqr_width * (colvo - j), width - sqr_width * (i + 1),
+                sqr_width, sqr_width), 0)
+                color = 'black'
+            else:
+                color = 'white'
+        if color_start == 'black':
+            color_start = 'white'
+        else:
+            color_start = 'black'
 
 
 if __name__ == '__main__':
+    pygame.init()
     try:
-        width, height = map(int, input().split())
-        pygame.init()
-        size = (width, height)
+        a, n = map(int, input().split())
+        size = (a, a)
         screen = pygame.display.set_mode(size)
-        draw(width, height)
-        pygame.display.set_caption('Прямоугольник')
-        pygame.display.flip()
-        while pygame.event.wait().type != pygame.QUIT:
-            pass
-        pygame.quit()
+        draw(a, n)
     except:
-        print('Неверный формат введённых данных')
+        print('Введены данные в неверном формате')
         exit(0)
+    pygame.display.set_caption('Шахматная клетка')
+    pygame.display.flip()
+    while pygame.event.wait().type != pygame.QUIT:
+        pass
+    pygame.quit()
