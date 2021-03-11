@@ -12,23 +12,42 @@ class Example(QWidget):
 
     def initUI(self):
         self.setGeometry(600, 300, 500, 500)
-        self.setWindowTitle('Убегающая кнопка')
-        self.x, self.y = 175, 230
-        self.setMouseTracking(True)
-        font = QFont()
-        font.setPointSize(16)
+        self.setWindowTitle('Управление НЛО')
+        self.x, self.y = 10, 10
+        self.update()
 
-        self.btn = QPushButton(self)
-        self.btn.setText('Нажми меня')
-        self.btn.resize(150, 40)
-        self.btn.move(175, 230)
-        self.btn.setFont(font)
+    def paintEvent(self, event):
+        qp = QPainter(self)
+        qp.begin(self)
+        qp.setBrush(QColor(150, 150, 150))
+        qp.setPen(QColor(150, 150, 150))
+        qp.drawEllipse(self.x, self.y, 70, 40)
+        qp.setBrush(QColor(0, 0, 0))
+        qp.setPen(QColor(0, 0, 0))
+        qp.drawEllipse(self.x + 25, self.y + 10, 20, 20)
+        qp.end()
 
-    def mouseMoveEvent(self, event):
-        x, y = event.x(), event.y()
-        if self.x - 15 < x < self.x + 115 or self.y - 15 < y < self.y + 55:
-            self.x, self.y = randint(0, 350), randint(0, 460)
-            self.btn.move(self.x, self.y)
+    def keyPressEvent(self, event):
+        if int(event.key()) == 16777234:  # влево
+            self.x -= 10
+            if self.x < 0:
+                self.x = 430
+            self.update()
+        elif int(event.key()) == 16777236:  # вправо
+            self.x += 10
+            if self.x > 430:
+                self.x = 0
+            self.update()
+        elif int(event.key()) == 16777235:  # вверх
+            self.y -= 10
+            if self.y < 0:
+                self.y = 460
+            self.update()
+        elif int(event.key()) == 16777237:  # вниз
+            self.y += 10
+            if self.y > 460:
+                self.y = 0
+            self.update()
 
 
 if __name__ == '__main__':
