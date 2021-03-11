@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel
-from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel
+from PyQt5.QtGui import QPainter, QColor, QFont
 from PyQt5.QtCore import Qt, QPoint
 from random import randint
 
@@ -12,37 +12,23 @@ class Example(QWidget):
 
     def initUI(self):
         self.setGeometry(600, 300, 500, 500)
-        self.setWindowTitle('Машинка')
-        self.x, self.y = 0, 0
+        self.setWindowTitle('Убегающая кнопка')
+        self.x, self.y = 175, 230
         self.setMouseTracking(True)
-        self.color1 = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
-        self.color2 = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
+        font = QFont()
+        font.setPointSize(16)
+
+        self.btn = QPushButton(self)
+        self.btn.setText('Нажми меня')
+        self.btn.resize(150, 40)
+        self.btn.move(175, 230)
+        self.btn.setFont(font)
 
     def mouseMoveEvent(self, event):
-        self.x, self.y = event.x(), event.y()
-        self.update()
-
-    def paintEvent(self, event):
-        qp = QPainter()
-        qp.begin(self)
-        qp.setBrush(self.color1)
-        qp.drawRect(self.x - 50, self.y - 50, 100, 100)
-        qp.drawEllipse(self.x - 25, self.y - 100, 50, 50)
-        qp.setBrush(self.color2)
-        qp.drawEllipse(self.x - 80, self.y - 25, 30, 30)
-        qp.drawEllipse(self.x + 50, self.y - 25, 30, 30)
-        qp.drawEllipse(self.x - 50, self.y + 50, 30, 30)
-        qp.drawEllipse(self.x + 20, self.y + 50, 30, 30)
-        qp.setBrush(QColor(255, 91, 0))
-        qp.drawEllipse(self.x - 7, self.y - 70, 15, 15)
-        qp.drawEllipse(self.x - 15, self.y - 90, 10, 10)
-        qp.drawEllipse(self.x + 15, self.y - 90, 10, 10)
-        qp.end()
-
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Space:
-            self.color1 = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
-            self.color2 = QColor(randint(0, 255), randint(0, 255), randint(0, 255))
+        x, y = event.x(), event.y()
+        if self.x - 15 < x < self.x + 115 or self.y - 15 < y < self.y + 55:
+            self.x, self.y = randint(0, 350), randint(0, 460)
+            self.btn.move(self.x, self.y)
 
 
 if __name__ == '__main__':
