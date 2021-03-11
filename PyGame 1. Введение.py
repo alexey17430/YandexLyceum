@@ -2,15 +2,15 @@ import pygame
 
 
 def draw(n):
-    pi = 3.14
-    screen.fill(color=pygame.Color('black'))
-    dx = 150 / n
-    for i in range(n):
-        pygame.draw.ellipse(screen, pygame.Color('white'), (dx * i, 0, 300 - dx * i * 2, 300),
-                            width=1)
-    for j in range(n):
-        pygame.draw.ellipse(screen, pygame.Color('white'), (0, dx * j, 300, 300 - dx * j * 2),
-                            width=1)
+    screen.fill(color=pygame.Color('yellow'))
+    for i in range(300 // n):
+        for j in range(300 // n):
+            pygame.draw.polygon(screen, color=pygame.Color('orange'),
+                                points=((j * n, i * n + n / 2),
+                                        (j * n + n / 2, i * n + n),
+                                        (j * n + n, i * n + n / 2),
+                                        (j * n + n / 2, i * n),
+                                        (j * n, i * n + n / 2)))
 
 
 if __name__ == '__main__':
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     except:
         print('Введены данные в неверном формате')
         exit(0)
-    pygame.display.set_caption('Сфера')
+    pygame.display.set_caption('Ромбики')
     pygame.display.flip()
     while pygame.event.wait().type != pygame.QUIT:
         pass
