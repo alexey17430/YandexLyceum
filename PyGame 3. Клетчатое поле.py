@@ -40,10 +40,17 @@ class Board:
                                   self.cell_size,
                                   self.cell_size), 1)
 
+    def square_pushed(self, mouse_pos):
+        mx, my = mouse_pos
+        if not mx - self.left < self.cell_size * self.width or\
+                not my - self.top < self.cell_size * self.height:
+            return None
+        return (mx - self.left) // self.cell_size + 1, (my - self.top) // self.cell_size + 1
+
 
 if __name__ == '__main__':
     pygame.init()
-    size = width, height = 800, 600
+    size = w, h = 800, 600
     screen = pygame.display.set_mode(size)
     board = Board(5, 7)
     running = True
@@ -51,6 +58,9 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                ans = board.square_pushed(event.pos)
+                print(f'({ans[0] - 1}, {ans[1] - 1})')
         screen.fill((0, 0, 0))
         board.render()
         pygame.display.flip()
