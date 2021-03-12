@@ -10,6 +10,7 @@ class Board:
         self.left = 10
         self.top = 10
         self.cell_size = 30
+        self.tic_tac = True
 
     def set_view(self, left, top, cell_size):
         self.left = left
@@ -28,19 +29,25 @@ class Board:
                                       self.cell_size))
 
                 elif self.board[i][j] == 1:
-                    color = pygame.Color('red')
-                    pygame.draw.rect(screen, color,
-                                     (self.left + j * self.cell_size,
-                                      self.top + i * self.cell_size,
-                                      self.cell_size,
-                                      self.cell_size))
-                elif self.board[i][j] == 2:
+                    # крестик
                     color = pygame.Color('blue')
-                    pygame.draw.rect(screen, color,
+                    pygame.draw.line(screen, color,
+                                     (self.left + j * self.cell_size + 2,
+                                      self.top + i * self.cell_size + 2),
+                                     (self.left + j * self.cell_size + self.cell_size - 2,
+                                      self.top + i * self.cell_size + self.cell_size - 2), 5)
+                    pygame.draw.line(screen, color,
+                                     (self.left + j * self.cell_size + self.cell_size - 2,
+                                      self.top + i * self.cell_size + 2),
                                      (self.left + j * self.cell_size,
-                                      self.top + i * self.cell_size,
-                                      self.cell_size,
-                                      self.cell_size))
+                                      self.top + i * self.cell_size + self.cell_size - 2), 5)
+                elif self.board[i][j] == 2:
+                    # нолик
+                    color = pygame.Color('red')
+                    pygame.draw.circle(screen, color,
+                                       (self.left + j * self.cell_size + (self.cell_size // 2),
+                                        self.top + i * self.cell_size + (self.cell_size // 2)),
+                                       (self.cell_size // 2 - 2), 5)
                 pygame.draw.rect(screen, pygame.Color('white'),
                                  (self.left + j * self.cell_size,
                                   self.top + i * self.cell_size,
@@ -56,17 +63,21 @@ class Board:
                          (my - self.top) // self.cell_size + 1)
         self.recolor(square_coords)
 
+    # 1 - крестики, 2 - нолики
     def recolor(self, coords):
         x, y = coords
         x -= 1
         y -= 1
 
-        if self.board[y][x] == 1:
-            self.board[y][x] = 2
-        elif self.board[y][x] == 0:
-            self.board[y][x] = 1
+        if self.board[y][x] == 1 or self.board[y][x] == 2:
+            pass
         else:
-            self.board[y][x] = 0
+            if self.tic_tac:
+                self.tic_tac = False
+                self.board[y][x] = 1
+            else:
+                self.tic_tac = True
+                self.board[y][x] = 2
 
 
 if __name__ == '__main__':
