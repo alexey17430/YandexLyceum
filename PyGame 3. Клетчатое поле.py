@@ -27,8 +27,15 @@ class Board:
                                       self.cell_size,
                                       self.cell_size))
 
-                else:
-                    color = pygame.Color('white')
+                elif self.board[i][j] == 1:
+                    color = pygame.Color('red')
+                    pygame.draw.rect(screen, color,
+                                     (self.left + j * self.cell_size,
+                                      self.top + i * self.cell_size,
+                                      self.cell_size,
+                                      self.cell_size))
+                elif self.board[i][j] == 2:
+                    color = pygame.Color('blue')
                     pygame.draw.rect(screen, color,
                                      (self.left + j * self.cell_size,
                                       self.top + i * self.cell_size,
@@ -55,21 +62,11 @@ class Board:
         y -= 1
 
         if self.board[y][x] == 1:
-            self.board[y][x] = 0
-        else:
+            self.board[y][x] = 2
+        elif self.board[y][x] == 0:
             self.board[y][x] = 1
-
-        for i in range(self.height):
-            if self.board[i][x] == 1:
-                self.board[i][x] = 0
-            else:
-                self.board[i][x] = 1
-
-        for j in range(self.width):
-            if self.board[y][j] == 1:
-                self.board[y][j] = 0
-            else:
-                self.board[y][j] = 1
+        else:
+            self.board[y][x] = 0
 
 
 if __name__ == '__main__':
