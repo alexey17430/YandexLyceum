@@ -3,37 +3,24 @@ import pygame
 
 if __name__ == '__main__':
     pygame.init()
-    pygame.display.set_caption('Перетаскивание')
-    size = width, height = 300, 300
+    pygame.display.set_caption('Я слежу за тобой')
+    size = width, height = 200, 200
     screen = pygame.display.set_mode(size)
     running = True
-    v = 100
-    fps = 60
-    clock = pygame.time.Clock()
-    clicked = False
-    rx, ry = 0, 0
-    w, h = 100, 100
-    pygame.draw.rect(screen, pygame.Color('green'), (rx, ry, w, h))
+    colvo = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    mx, my = event.pos
-                    if rx <= mx <= rx + w and ry <= my <= ry + h and not clicked:
-                        clicked = True
-                        dx = mx - rx
-                        dy = my - ry
-
-            if event.type == pygame.MOUSEMOTION and clicked:
+            if event.type == pygame.TEXTEDITING:
                 screen.fill((0, 0, 0))
-                mx, my = event.pos
-                rx, ry = mx - dx, my - dy
-                pygame.draw.rect(screen, pygame.Color('green'), (rx, ry, w, h))
-            if event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1:
-                    clicked = False
-        clock.tick(fps)
+                colvo += 1
+                font = pygame.font.Font(None, 100)
+                text = font.render(f"{colvo}", True, (255, 0, 0))
+                text_y = height // 2 - text.get_height() // 2
+                text_x = width // 2 - text.get_width() // 2
+                text_w = text.get_width()
+                text_h = text.get_height()
+                screen.blit(text, (text_x, text_y))
         pygame.display.flip()
     pygame.quit()
