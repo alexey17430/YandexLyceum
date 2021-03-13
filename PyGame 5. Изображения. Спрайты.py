@@ -22,43 +22,50 @@ def load_image(name, colorkey=None):
 
 if __name__ == '__main__':
     pygame.init()
-    size = width, height = 300, 300
+    size = width, height = 600, 95
     screen = pygame.display.set_mode(size)
+    pygame.display.set_caption('Машинка')
+    clock = pygame.time.Clock()
+    fps = 60
 
-    person_image = load_image('creature.png')
+    car_image = load_image('car.png')
     all_sprites = pygame.sprite.Group()
     im_x, im_y = 0, 0
-    person = pygame.sprite.Sprite(all_sprites)
-    person.image = person_image
-    person.rect = person.image.get_rect()
-    person.rect.x = im_x
-    person.rect.y = im_y
-    person.update()
+    car = pygame.sprite.Sprite(all_sprites)
+    car.image = car_image
+    car.rect = car.image.get_rect()
+    car.rect.x = im_x
+    car.rect.y = im_y
+    car.update()
     all_sprites.draw(screen)
+    speed = 1
 
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN:
-                all_sprites = pygame.sprite.Group()
-                person = pygame.sprite.Sprite(all_sprites)
-                person.image = person_image
-                person.rect = person.image.get_rect()
-                if event.scancode == 82:
-                    im_y -= 10
-                elif event.scancode == 79:
-                    im_x += 10
-                elif event.scancode == 81:
-                    im_y += 10
-                elif event.scancode == 80:
-                    im_x -= 10
-                person.rect.x = im_x
-                person.rect.y = im_y
-                person.update()
+
+        if im_x + car.rect.width == 600:
+            speed = -1
+        if im_x == 0:
+            speed = 1
+        all_sprites = pygame.sprite.Group()
+        car = pygame.sprite.Sprite(all_sprites)
+        if speed == 1:
+            car.image = car_image
+            car.rect = car.image.get_rect()
+        else:
+            car.image = pygame.transform.flip(car_image, True, False)
+            car.rect = car.image.get_rect()
+
+        im_x += speed
+        car.rect.x = im_x
+        car.rect.y = im_y
+        car.update()
 
         screen.fill(pygame.Color('white'))
         all_sprites.draw(screen)
+        clock.tick(fps)
         pygame.display.flip()
     pygame.quit()
