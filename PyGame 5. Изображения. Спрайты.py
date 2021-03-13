@@ -1,12 +1,10 @@
 import os
 import sys
 import pygame
-import random
 
 
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
-    # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
         sys.exit()
@@ -22,29 +20,45 @@ def load_image(name, colorkey=None):
     return image
 
 
-pygame.init()
-size = width, height = 500, 500
-screen = pygame.display.set_mode(size)
-arrow_image = load_image('arrow.png')
-all_sprites = None
+if __name__ == '__main__':
+    pygame.init()
+    size = width, height = 300, 300
+    screen = pygame.display.set_mode(size)
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.MOUSEMOTION:
-            all_sprites = pygame.sprite.Group()
-            bomb = pygame.sprite.Sprite(all_sprites)
-            bomb.image = arrow_image
-            bomb.rect = bomb.image.get_rect()
-            bomb.rect.x = event.pos[0]
-            bomb.rect.y = event.pos[1]
-            bomb.update()
-    screen.fill(pygame.Color('black'))
-    if all_sprites is not None and pygame.mouse.get_focused():
-        pygame.mouse.set_visible(False)
+    person_image = load_image('creature.png')
+    all_sprites = pygame.sprite.Group()
+    im_x, im_y = 0, 0
+    person = pygame.sprite.Sprite(all_sprites)
+    person.image = person_image
+    person.rect = person.image.get_rect()
+    person.rect.x = im_x
+    person.rect.y = im_y
+    person.update()
+    all_sprites.draw(screen)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                all_sprites = pygame.sprite.Group()
+                person = pygame.sprite.Sprite(all_sprites)
+                person.image = person_image
+                person.rect = person.image.get_rect()
+                if event.scancode == 82:
+                    im_y -= 10
+                elif event.scancode == 79:
+                    im_x += 10
+                elif event.scancode == 81:
+                    im_y += 10
+                elif event.scancode == 80:
+                    im_x -= 10
+                person.rect.x = im_x
+                person.rect.y = im_y
+                person.update()
+
+        screen.fill(pygame.Color('white'))
         all_sprites.draw(screen)
-    pygame.display.flip()
-
-pygame.quit()
+        pygame.display.flip()
+    pygame.quit()
