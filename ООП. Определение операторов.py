@@ -1,9 +1,8 @@
-class ReversedList:
-    def __init__(self, sp):
-        self.sp = sp
+class SquareFunction:
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
 
-    def __len__(self):
-        return len(self.sp)
-
-    def __getitem__(self, key):
-        return list(reversed(self.sp))[key]
+    def __call__(self, x):
+        return self.a * x ** 2 + self.b * x + self.c
