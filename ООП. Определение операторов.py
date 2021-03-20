@@ -1,10 +1,9 @@
-class Point:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+class SparseArray:
+    def __init__(self):
+        self.dict_of_numbers = dict()
 
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
+    def __getitem__(self, key):
+        return self.dict_of_numbers.get(key, 0)
 
-    def __ne__(self, other):
-        return self.x != other.x or self.y != other.y
+    def __setitem__(self, key, value):
+        self.dict_of_numbers[key] = value
