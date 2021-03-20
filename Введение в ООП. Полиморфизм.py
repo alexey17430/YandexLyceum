@@ -1,48 +1,76 @@
-class Rectangle:
-    def __init__(self, x, y, w, h):
-        self.x1 = x
-        self.y1 = y
-        self.x2 = x + w
-        self.y2 = y + h
+class Table:
+    """
+    rows - количество списков внутри списка
+    cols - длина маленьких списков
+    """
 
-    def intersection(self, other):
-        if self.x2 <= other.x1 or self.x1 >= other.x2:
-            return None
-        elif self.y1 >= other.y2 or self.y2 <= other.y1:
-            return None
+    def __init__(self, rows, cols):
+        self.table = list()
+        for i in range(rows):
+            small_ans = list()
+            for j in range(cols):
+                small_ans.append(0)
+            self.table.append(small_ans)
+        self.rows = rows
+        self.cols = cols
+
+    def get_value(self, row, col):
+        try:
+            ans = self.table[row][col]
+        except IndexError:
+            ans = None
+        if row < 0 or col < 0:
+            ans = None
+        return ans
+
+    def set_value(self, row, col, value):
+        self.table[row][col] = value
+
+    def n_rows(self):
+        return len(self.table)
+
+    def n_cols(self):
+        return len(self.table[0]) if self.table else 0
+
+    def delete_row(self, row):
+        new_table = [self.table[i] for i in range(len(self.table)) if i != row]
+        self.table.clear()
+        self.table.extend(new_table)
+
+    def delete_col(self, col):
+        new_table = list()
+        for elem in self.table:
+            new_table.append([elem[i] for i in range(len(elem)) if i != col])
+        self.table.clear()
+        self.table.extend(new_table)
+
+    def add_row(self, row):
+        if self.table == [0]:
+            self.table.clear()
+            self.table.append([0])
         else:
-            answer = list()  # x1, x2, y1, y2
-            if self.x1 < other.x1:
-                answer.append(other.x1)
-            else:
-                answer.append(self.x1)
+            self.table.insert(row, [0 for _ in range(len(self.table[0]) if self.table else 0)])
 
-            if self.x2 < other.x2:
-                answer.append(self.x2)
-            else:
-                answer.append(other.x2)
+    def add_col(self, col):
 
-            if self.y1 < other.y1:
-                answer.append(other.y1)
-            else:
-                answer.append(self.y1)
-
-            if self.y2 < other.y2:
-                answer.append(self.y2)
-            else:
-                answer.append(other.y2)
-
-            return Rectangle(min(answer[0], answer[1]), min(answer[2], answer[3]),
-                             abs(answer[0] - answer[1]), abs(answer[2] - answer[3]))
-
-    def get_x(self):
-        return self.x1
-
-    def get_y(self):
-        return self.y1
-
-    def get_w(self):
-        return self.x2 - self.x1
-
-    def get_h(self):
-        return self.y2 - self.y1
+        if len(self.table) > 0:
+            small_ans = list()
+            for i in range(len(self.table)):
+                sp = self.table[i]
+                sp1 = list()
+                flag = False
+                if col == 0:
+                    sp1.append(0)
+                    flag = True
+                for j in range(len(sp)):
+                    if j == col and not flag:
+                        sp1.append(0)
+                        flag = True
+                    sp1.append(sp[j])
+                if not flag:
+                    sp1.append(0)
+                small_ans.append(sp1)
+            self.table.clear()
+            self.table.extend(small_ans)
+        else:
+            self.table.append(0)
