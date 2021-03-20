@@ -1,22 +1,9 @@
-class FoodInfo:
-    def __init__(self, proteins, fats, carbohydrates):
-        self.proteins = proteins
-        self.fats = fats
-        self.carbohydrates = carbohydrates
+class ReversedList:
+    def __init__(self, sp):
+        self.sp = sp
 
-    def get_proteins(self):
-        return self.proteins
+    def __len__(self):
+        return len(self.sp)
 
-    def get_fats(self):
-        return self.fats
-
-    def get_carbohydrates(self):
-        return self.carbohydrates
-
-    def get_kcalories(self):
-        return 4 * self.proteins + 9 * self.fats + 4 * self.carbohydrates
-
-    def __add__(self, other):
-        return FoodInfo(self.proteins + other.proteins,
-                        self.fats + other.fats,
-                        self.carbohydrates + other.carbohydrates)
+    def __getitem__(self, key):
+        return list(reversed(self.sp))[key]
