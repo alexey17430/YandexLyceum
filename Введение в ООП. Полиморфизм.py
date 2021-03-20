@@ -1,22 +1,60 @@
-class LeftParagraph:
-    def __init__(self, width):
-        self.width = width
-        self.all_words = list()
+class AmericanDate:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
 
-    def add_word(self, word):
-        if self.all_words and len(word) + len(self.all_words[-1]) < self.width:
-            self.all_words[-1] += ' ' + word
-        else:
-            self.all_words.append(word)
+    def set_year(self, chislo):
+        self.year = chislo
 
-    def end(self):
-        for elem in self.all_words:
-            print(elem)
-        self.all_words = list()
+    def set_month(self, chislo):
+        self.month = chislo
+
+    def set_day(self, chislo):
+        self.day = chislo
+
+    def get_year(self):
+        return self.year
+
+    def get_month(self):
+        return self.month
+
+    def get_day(self):
+        return self.day
+
+    def format(self):
+        month = self.month if self.month >= 10 else '0' + str(self.month)
+        day = self.day if self.day >= 10 else '0' + str(self.day)
+        year = self.year
+        return f'{month}.{day}.{year}'
 
 
-class RightParagraph(LeftParagraph):
-    def end(self):
-        for elem in self.all_words:
-            print(elem.rjust(self.width, ' '))
-        self.all_words = list()
+class EuropeanDate:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+
+    def set_year(self, chislo):
+        self.year = chislo
+
+    def set_month(self, chislo):
+        self.month = chislo
+
+    def set_day(self, chislo):
+        self.day = chislo
+
+    def get_year(self):
+        return self.year
+
+    def get_month(self):
+        return self.month
+
+    def get_day(self):
+        return self.day
+
+    def format(self):
+        month = self.month if self.month >= 10 else '0' + str(self.month)
+        day = self.day if self.day >= 10 else '0' + str(self.day)
+        year = self.year
+        return f'{day}.{month}.{year}'
