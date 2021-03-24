@@ -1,36 +1,21 @@
-class User:
-    def __init__(self, name):
-        self.name = name
-
-    def send_message(self, user, message):
+class Animal:
+    def breathe(self):
         pass
 
-    def post(self, message):
-        pass
-
-    def info(self):
-        return ''
-
-    def describe(self):
+    def eat(self):
         pass
 
 
-class Person(User):
-    def __init__(self, name, birthday):
-        super().__init__(name)
-        self.birthday = birthday
-
-    def info(self):
-        return f'Дата рождения: {self.birthday}'
-
-    def subscribe(self, user):
+class Fish(Animal):
+    def swim(self):
         pass
 
 
-class Community(User):
-    def __init__(self, name, opisanie):
-        super().__init__(name)
-        self.opisanie = opisanie
+class Bird(Animal):
+    def lay_eggs(self):
+        pass
 
-    def info(self):
-        return f'Описание: {self.opisanie}'
+
+class FlyingBird(Bird):
+    def fly(self):
+        pass
