@@ -1,22 +1,30 @@
-class BaseObject:
-    def __init__(self, x, y, z):
-        self.x = x
-        self.y = y
-        self.z = z
-
-    def get_coordinates(self):
-        return [self.x, self.y, self.z]
+class Acellularia:
+    pass
 
 
-class Block(BaseObject):
-    def shatter(self):
-        self.x = self.y = self.z = None
+class Cellularia:
+    pass
 
 
-class Entity(BaseObject):
-    def move(self, x, y, z):
-        super().__init__(x, y, z)
+class Prokaryota(Cellularia):
+    pass
 
 
-class Thing(BaseObject):
+class Eukaryota(Cellularia):
+    pass
+
+
+class Unicellularia(Eukaryota):
+    pass
+
+
+class Fungi(Eukaryota):
+    pass
+
+
+class Plantae(Eukaryota):
+    pass
+
+
+class Animalia(Eukaryota):
     pass
