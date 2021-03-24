@@ -1,30 +1,22 @@
-class Acellularia:
+class User:
+    def solve(self, n):
+        pass
+
+
+class Student(User):
     pass
 
 
-class Cellularia:
-    pass
+class Teacher(User):
+    def check_solution(self, user, n):
+        pass
 
 
-class Prokaryota(Cellularia):
-    pass
+class Admin(User):
+    def edit(self, n):
+        pass
 
 
-class Eukaryota(Cellularia):
-    pass
-
-
-class Unicellularia(Eukaryota):
-    pass
-
-
-class Fungi(Eukaryota):
-    pass
-
-
-class Plantae(Eukaryota):
-    pass
-
-
-class Animalia(Eukaryota):
-    pass
+class SuperAdmin(Admin):
+    def grant(self, user):
+        pass
