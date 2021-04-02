@@ -1,16 +1,17 @@
-from PIL import Image, ImageDraw
+import datetime as dt
 
 
-def direction(image, color):
-    pixels = image.load()
-    x, y = image.size
-    ans_x = list()
-    ans_y = list()
-    for i in range(x):
-        for j in range(y):
-            if pixels[i, j] == color:
-                ans_x.append(i)
-                ans_y.append(j)
-    ans_x = sum(ans_x) // len(ans_x)
-    ans_y = sum(ans_y) // len(ans_y)
-    return abs(ans_x - x // 2), abs(ans_y - y // 2)
+def before_the_concert(first, second):
+
+    first = list(map(int, first.split('-')))
+    second = list(map(int, second.split('-')))
+    first = dt.date(first[0], first[1], first[2])
+    second = dt.date(second[0], second[1], second[2])
+    now = dt.datetime.now().date()
+
+    if int(first.strftime("%w")) == 1 or int(first.strftime("%w")) == 3:
+        first += dt.timedelta(days=1)
+    if int(second.strftime("%w")) == 1 or int(second.strftime("%w")) == 3:
+        second += dt.timedelta(days=1)
+
+    return int((first - now).days), int((second - now).days)
