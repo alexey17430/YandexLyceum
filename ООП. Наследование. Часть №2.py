@@ -1,16 +1,27 @@
-class Summator:
-    def transform(self, n):
-        return list(range(1, n + 1))
+class Profile:
+    def __init__(self, name_of_job):
+        self.name_of_job = name_of_job
 
-    def sum(self, n):
-        return sum(self.transform(n))
+    def info(self):
+        return ''
 
-
-class SquareSummator(Summator):
-    def transform(self, n):
-        return list(i ** 2 for i in range(1, n + 1))
+    def describe(self):
+        print(f'{self.name_of_job} {self.info()}')
 
 
-class CubeSummator(Summator):
-    def transform(self, n):
-        return list(i ** 3 for i in range(1, n + 1))
+class Vacancy(Profile):
+    def __init__(self, name_of_job, money):
+        super().__init__(name_of_job)
+        self.money = money
+
+    def info(self):
+        return f'Предлагаемая зарплата: {self.money}'
+
+
+class Resume(Profile):
+    def __init__(self, name_of_job, age_of_working):
+        super().__init__(name_of_job)
+        self.age_of_working = age_of_working
+
+    def info(self):
+        return f'Стаж работы: {self.age_of_working}'
