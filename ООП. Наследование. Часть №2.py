@@ -1,24 +1,22 @@
-class Summator:
-    def transform(self, n):
-        return list(range(1, n + 1))
+class A:
+    def __str__(self):
+        return 'A.__str__ method'
 
-    def sum(self, n):
-        return sum(self.transform(n))
-
-
-class PowerSummator(Summator):
-    def __init__(self, b):
-        self.b = b
-
-    def transform(self, n):
-        return list(i ** self.b for i in range(1, n + 1))
+    def hello(self):
+        print('Hello')
 
 
-class SquareSummator(PowerSummator):
-    def __init__(self):
-        super().__init__(2)
+class B:
+    def __str__(self):
+        return 'B.__str__ method'
+
+    def good_evening(self):
+        print('Good evening')
 
 
-class CubeSummator(PowerSummator):
-    def __init__(self):
-        super().__init__(3)
+class C(A, B):
+    pass
+
+
+class D(B, A):
+    pass
